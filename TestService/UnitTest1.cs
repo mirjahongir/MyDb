@@ -17,7 +17,7 @@ namespace TestService
             var start = 0;
             var span = _command.AsSpan();
             // Act
-            var result = ParseRequest.Trim(ref span, start);
+            var result = TokenParser.Trim(ref span, start);
 
             // Assert
             Assert.Equal(2, result);
@@ -29,9 +29,8 @@ namespace TestService
             var span = _command.AsSpan();// "  create database йоха".AsSpan();
             var start = 0;
             // Act
-            var result = ParseRequest.GetFirstChar(ref span, start);
-            Console.WriteLine(result.Item1);
-            Console.WriteLine(result.Item2);
+            var result = TokenParser.GetFirstChar(ref span, ref start);
+
             // Assert
         }
         [Fact]
@@ -43,17 +42,16 @@ namespace TestService
             char? key;
 
             // Act
-            (key, start) = ParseRequest.GetFirstChar(ref span, start);
-            var result = ParseRequest.GetKeyword(ref span, start, key);
+            key = TokenParser.GetFirstChar(ref span, ref start);
+            var result = TokenParser.GetKeyword(ref span, ref start, key);
             // Assert
         }
         [Fact]
         public void GetToken()
         {
             var span = _command.AsSpan();
-            var start = 0;
-            var token = ParseRequest.ParseToken(ref span, start);
-            
+            //var start = 0;
+            // var token = TokenParser.ParseToken(ref span, ref start);
         }
     }
 }

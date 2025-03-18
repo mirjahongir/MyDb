@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\libs\DbEnums\DbEnums.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
 </Project>

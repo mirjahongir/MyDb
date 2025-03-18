@@ -5,10 +5,13 @@ namespace DbEnums.Enums.Parser
     {
         None = 0,
         Command,
+        KeyWords,
+        Value,
+        Equal,
+        NotEqual,
+        Greater,
+        Less,
+
     }
-    public enum CmdType
-    {
-        NONE = 0,
-        Create,
-    }
+
 }

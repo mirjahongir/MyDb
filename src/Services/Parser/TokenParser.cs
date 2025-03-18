@@ -1,13 +1,13 @@
-﻿
-using System;
-using System.Text;
+﻿using System.Text;
 
 using DbEnums.Config;
 using DbEnums.Enums.Parser;
 
+using Models.ParserModel;
+
 namespace Services.Parser
 {
-    public static class ParseRequest
+    public static class TokenParser
     {
         public static int Trim(ref ReadOnlySpan<char> span, int start)
         {
@@ -20,7 +20,7 @@ namespace Services.Parser
             }
             return span.Length;
         }
-        public static (char?, int) GetFirstChar(ref ReadOnlySpan<char> span, int start)
+        public static char? GetFirstChar(ref ReadOnlySpan<char> span, ref int start)
         {
             for (var i = start; i < span.Length; i++)
             {
@@ -31,16 +31,18 @@ namespace Services.Parser
                     case '\n':
                         continue;
                     case '"':
-                        return ('"', i);
+                        start = i;
+                        return '"';
                     default:
-                        return (null, i);
+                        start = i;
+                        return null;
                 }
 
             }
-            return (null, span.Length);
+            return null;
         }
         //BUG: GetKeyword should return a Token
-        public static string GetKeyword(ref ReadOnlySpan<char> span, int start, char? key)
+        public static string GetKeyword(ref ReadOnlySpan<char> span, ref int start, char? key)
         {
             StringBuilder builder = new();
             for (int i = start; i < span.Length; i++)
@@ -50,31 +52,33 @@ namespace Services.Parser
                     builder.Append(span[i]);
                     continue;
                 }
+                start = i;
                 return builder.ToString();
             }
             return span.Slice(start).ToString();
         }
-        public static Token ParseToken(ref ReadOnlySpan<char> span, int start)
+
+        public static Token ParseToken(ref ReadOnlySpan<char> span, ref int start)
         {
             Token token = new();
-            var (key, newStart) = GetFirstChar(ref span, start);
-            token.Value = GetKeyword(ref span, newStart, key);
+            var key = GetFirstChar(ref span, ref start);
+            token.Value = GetKeyword(ref span, ref start, key);
             var str = token.Value.ToLower();
-            if (KeyConfig.CmdTypes.ContainsKey(str))
+            if (KeyConfig.CmdTypes.TryGetValue(str, out CmdType value))
             {
-                token.TokenType = TokenType.Command;
+                token.SetTokenType(value);
+            }
+            if (KeyConfig.KeyWords.TryGetValue(str, out KeyType keyType))
+            {
+                token.SetTokenType(keyType);
+            }
+            if (KeyConfig.Token.TryGetValue(str, out TokenType tokenType))
+            {
+                token.SetTokenType(tokenType);
             }
             return token;
         }
-    }
-    public class Token
-    {
-        public string? Value { get; set; }
-        public TokenType TokenType { get; set; }
-
-    }
-    public class ParseExpression
-    {
+        
 
     }
 }

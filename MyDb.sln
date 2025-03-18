@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "src\Services\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestService", "TestService\TestService.csproj", "{FB55F57F-E601-41B6-85AA-DD947CFEB54A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDb.Benchmark", "test\MyDb.Benchmark\MyDb.Benchmark.csproj", "{43B3E2F8-5DE0-4F2A-8E1A-375BDB3A3142}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{FB55F57F-E601-41B6-85AA-DD947CFEB54A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB55F57F-E601-41B6-85AA-DD947CFEB54A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB55F57F-E601-41B6-85AA-DD947CFEB54A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43B3E2F8-5DE0-4F2A-8E1A-375BDB3A3142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43B3E2F8-5DE0-4F2A-8E1A-375BDB3A3142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43B3E2F8-5DE0-4F2A-8E1A-375BDB3A3142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43B3E2F8-5DE0-4F2A-8E1A-375BDB3A3142}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +54,6 @@ Global
 		{75CA866E-4BDD-443B-8893-A0F3D1CC262B} = {64612C58-0633-4D62-8539-46CDF7A828E6}
 		{A0C24962-07E4-403D-838F-B9585B801133} = {7453C91F-5E9F-47BA-953D-2E086ACC5C60}
 		{FB55F57F-E601-41B6-85AA-DD947CFEB54A} = {533E971A-3952-47EC-94E3-32558A39DFED}
+		{43B3E2F8-5DE0-4F2A-8E1A-375BDB3A3142} = {533E971A-3952-47EC-94E3-32558A39DFED}
 	EndGlobalSection
 EndGlobal
