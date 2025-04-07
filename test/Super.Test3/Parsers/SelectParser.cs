@@ -27,4 +27,17 @@ namespace Super.Test3.Parsers
                 WhereStatement = whereState
             };
     }
+    public class SelectTest
+    {
+        static string SelectQueryString = "SELECT * FROM Talabalar WHERE Id = 1 ;";
+        public static SelectStatement SelectMethod()
+        {
+            var tokenizer = SqlTokenizer.Instance;
+            var tokens = tokenizer.Tokenize(SelectQueryString);
+            var result = SelectParser.Selects.Parse(tokens);
+            return result;
+
+        }
+
+    }
 }

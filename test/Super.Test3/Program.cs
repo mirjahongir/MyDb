@@ -1,16 +1,50 @@
-﻿using Super.Test3.Enums;
+﻿
+using System.Collections.Generic;
 
-using Superpower;
-using Superpower.Display;
-using Superpower.Parsers;
+using Newtonsoft.Json;
+
+using Super.Test3.Parsers;
 
 namespace Super.Test3
 {
-    public class ISqlStatement
-    {
 
+    public class Program
+    {
+        public static void Main()
+        {
+            Insert();
+            // Update();
+            // Select();
+            Console.ReadLine();
+        }
+        public void Create()
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(CreateTest.CreateSchema()));
+            Console.WriteLine(JsonConvert.SerializeObject(CreateTest.CreateDatabase()));
+            Console.WriteLine(JsonConvert.SerializeObject(CreateTest.CreateTable()));
+        }
+        static void Select()
+        {
+            var selectModel = SelectTest.SelectMethod();
+            Console.WriteLine(JsonConvert.SerializeObject(selectModel));
+
+        }
+        static void Update()
+        {
+            var updateModel = UpdateTest.UpdateMethod();
+            Console.WriteLine(JsonConvert.SerializeObject(updateModel));
+        }
+        static void Insert()
+        {
+            var insertModel = InsertTest.InsertMethod();
+            Console.WriteLine(JsonConvert.SerializeObject(insertModel));
+        }
     }
-  
+
+
+
+
+
 
     //public static class SqlParser
     //{
@@ -40,7 +74,7 @@ namespace Super.Test3
     //            Where = whereClause
     //        };
 
-    
+
     //    public static TokenListParser<SqlToken, UpdateStatement> Update =
     //          from update in Token.EqualTo(SqlToken.Update)
     //          from table in Identifier
@@ -53,55 +87,54 @@ namespace Super.Test3
     //           ).ManyDelimitedBy(Token.EqualTo(SqlToken.Comma))
     //          select new UpdateStatement() { Assigments = assigments, Table = table, };
 
-        
+
 
     //   }
 
-    public class Program
-    {
-        //static string createDatabase = "create database test";
-        //static string createTable = "CREATE TABLE Talabalar (\r\n    Id INT,\r\n    Ism VARCHAR(50),\r\n    TugilganYil INT\r\n);";
-        //public static void CreateTableMethod()
-        //{
-        //    var tokenizer = SqlTokenizer.Instance;
-        //    var tokens = tokenizer.Tokenize(createTable);
-        //    var result = SqlParser.CreateTable.Parse(tokens);
-        //    Console.WriteLine(result);
-        //}
-        //static string updateSet = "UPDATE Talabalar SET Ism = \"Ali\", Yoshi = 25 WHERE Id = 1\r\n;";
-        //public static void Update()
-        //{
-        //    var tokenizer = SqlTokenizer.Instance;
-        //    var tokens = tokenizer.Tokenize(updateSet);
-        //    var result = SqlParser.Update.Parse(tokens);
-        //    Console.WriteLine(result);
-        //}
-        static void Main(string[] args)
-        {
+    //public class Program
+    //{
+    //    //static string createDatabase = "create database test";
+    //    //static string createTable = "CREATE TABLE Talabalar (\r\n    Id INT,\r\n    Ism VARCHAR(50),\r\n    TugilganYil INT\r\n);";
+    //    //public static void CreateTableMethod()
+    //    //{
+    //    //    var tokenizer = SqlTokenizer.Instance;
+    //    //    var tokens = tokenizer.Tokenize(createTable);
+    //    //    var result = SqlParser.CreateTable.Parse(tokens);
+    //    //    Console.WriteLine(result);
+    //    //}
+    //    //static string updateSet = "UPDATE Talabalar SET Ism = \"Ali\", Yoshi = 25 WHERE Id = 1\r\n;";
+    //    //public static void Update()
+    //    //{
+    //    //    var tokenizer = SqlTokenizer.Instance;
+    //    //    var tokens = tokenizer.Tokenize(updateSet);
+    //    //    var result = SqlParser.Update.Parse(tokens);
+    //    //    Console.WriteLine(result);
+    //    //}
+    //    static void Main(string[] args)
+    //    {
 
-            //Update();
-            //CreateTableMethod();
-            //return;
-            //var tokenizer = SqlTokenizer.Instance;
-            //var tokens = tokenizer.Tokenize(createDatabase);
-            //var result = SqlParser.CreateDatabase.Parse(tokens);
-            //Console.WriteLine(result.Database);
+    //        //Update();
+    //        //CreateTableMethod();
+    //        //return;
+    //        //var tokenizer = SqlTokenizer.Instance;
+    //        //var tokens = tokenizer.Tokenize(createDatabase);
+    //        //var result = SqlParser.CreateDatabase.Parse(tokens);
+    //        //Console.WriteLine(result.Database);
 
-            //var result = SqlParser.Selects.Parse(tokens);
-            //Console.WriteLine(result.Table);
-            //Console.WriteLine(string.Join(", ", result.Columns));
-            //Console.WriteLine(result.Where.Column + " = " + result.Where.Value);
-            //var result = SqlParser.Insert.Parse(tokens);
-            //Console.WriteLine(result.Table);
-            //Console.WriteLine(string.Join(", ", result.Columns));
-            //Console.WriteLine(string.Join(", ", result.Values));
-            //var result = SqlParser.Update.Parse(tokens);
-            //Console.WriteLine(result.Table);
-            //foreach (var item in result.Assigments)
-            //{
-            //    Console.WriteLine(item.Column + " = " + item.Value);
-            //}
-        }
-
-    }
+    //        //var result = SqlParser.Selects.Parse(tokens);
+    //        //Console.WriteLine(result.Table);
+    //        //Console.WriteLine(string.Join(", ", result.Columns));
+    //        //Console.WriteLine(result.Where.Column + " = " + result.Where.Value);
+    //        //var result = SqlParser.Insert.Parse(tokens);
+    //        //Console.WriteLine(result.Table);
+    //        //Console.WriteLine(string.Join(", ", result.Columns));
+    //        //Console.WriteLine(string.Join(", ", result.Values));
+    //        //var result = SqlParser.Update.Parse(tokens);
+    //        //Console.WriteLine(result.Table);
+    //        //foreach (var item in result.Assigments)
+    //        //{
+    //        //    Console.WriteLine(item.Column + " = " + item.Value);
+    //        //}
+    //    }
+    //}
 }

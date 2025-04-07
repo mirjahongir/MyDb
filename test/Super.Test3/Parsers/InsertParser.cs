@@ -6,9 +6,9 @@ namespace Super.Test3.Parsers
 {
     public class InsertStatement
     {
-        public string Table { get; set; }
-        public string[] Columns { get; set; }
-        public string[] Values { get; set; }
+        public string? Table { get; set; }
+        public string[]? Columns { get; set; }
+        public string[]? Values { get; set; }
     }
     public static class InsertParser
     {
@@ -21,9 +21,29 @@ namespace Super.Test3.Parsers
          from rparent1 in Token.EqualTo(SqlToken.RParen)
          from values in Token.EqualTo(SqlToken.Values)
          from lparen2 in Token.EqualTo(SqlToken.LParen)
-         from vals in SqlTokenizer.StringLiteral.AtLeastOnceDelimitedBy(Token.EqualTo(SqlToken.Comma))
+         from vals in SqlTokenizer.StringLiteral.Or(SqlTokenizer.NumberLiteral).AtLeastOnceDelimitedBy(Token.EqualTo(SqlToken.Comma))
          from rparent2 in Token.EqualTo(SqlToken.RParen)
          select new InsertStatement() { Columns = columns, Table = table, Values = vals };
 
+    }
+     static class InsertTest
+    {
+        static string input = "INSERT INTO users (name, age) VALUES ('John', 30)";
+        public static InsertStatement InsertMethod()
+        {
+
+            var result = SqlTokenizer.Instance.Tokenize(input);
+            var insertResult = InsertParser.Insert.Parse(result);
+            return insertResult;
+
+            //if (insertResult.HasValue)
+            //{
+            //    return insertResult.Value;
+            //}
+            //else
+            //{
+            //    throw new Exception("Parsing failed");
+            //}
+        }
     }
 }

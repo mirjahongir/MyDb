@@ -25,10 +25,10 @@ namespace Super.Test3.Parsers
         public string? Column { get; set; }
         public string? Type { get; set; }
     }
-    public class Schema : Create
+    public class CreateSchema : Create
     {
         public override CreateType CreateType => CreateType.Schema;
-        public string SchemaName { get; set; }
+        public required string SchemaName { get;  set; }
     }
 
     public static class CreateParser
@@ -59,10 +59,46 @@ namespace Super.Test3.Parsers
             from create in Token.EqualTo(SqlToken.Create)
             from schema in Token.EqualTo(SqlToken.Schema)
             from schemaName in SqlTokenizer.Identifier
-            select (Create)new Schema() { SchemaName = schemaName };
+            select (Create)new CreateSchema() { SchemaName = schemaName };
 
         public static TokenListParser<SqlToken, Create> Create =
             CreateTable.Try().Or(CreateDatabase).Try().Or(CreateShcema);
+
+    }
+
+    public class CreateTest
+    {
+        static string createTableString = "CREATE TABLE Talabalar (\r\n    Id INT,\r\n    Ism VARCHAR(50),\r\n    TugilganYil INT\r\n);";
+        public static Create CreateTable()
+        {
+            var tokenizer = SqlTokenizer.Instance;
+            var tokens = tokenizer.Tokenize(createTableString);
+            var result = CreateParser.Create.Parse(tokens);
+            return result;
+            
+        }
+        static string createDatabaseString = "CREATE DATABASE test;";
+        public static Create CreateDatabase()
+        {
+            var tokenizer = SqlTokenizer.Instance;
+            var tokens = tokenizer.Tokenize(createDatabaseString);
+            var result = CreateParser.Create.Parse(tokens);
+            return result;
+            if (result is CreateDatabase createDatabase)
+            {
+                Console.WriteLine($"Database: {createDatabase.Database}");
+            }
+        }
+
+        static string createSchemaString = "CREATE SCHEMA test;";
+        public static Create CreateSchema()
+        {
+            var tokenizer = SqlTokenizer.Instance;
+            var tokens = tokenizer.Tokenize(createSchemaString);
+            var result = CreateParser.Create.Parse(tokens);
+           
+            return result;
+        }
 
     }
 }

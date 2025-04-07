@@ -1,4 +1,5 @@
 ﻿using Super.Test3.Enums;
+
 using Superpower;
 using Superpower.Parsers;
 
@@ -8,11 +9,11 @@ namespace Super.Test3.Parsers
     {
         public string TableName { get; internal set; }
     }
-    public static class FromParser
+    static class FromParser
     {
         public static TokenListParser<SqlToken, FromStatement> Froms =
             from froms in Token.EqualTo(SqlToken.From)
             from table in SqlTokenizer.Identifier
-            select new FromStatement() {TableName= table };
+            select new FromStatement() { TableName = table };
     }
 }

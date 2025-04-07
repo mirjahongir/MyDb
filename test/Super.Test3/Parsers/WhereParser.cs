@@ -22,7 +22,7 @@ namespace Super.Test3.Parsers
         public string Column { get; set; }
         public string Value { get; set; }
     }
-    public static class WhereParser
+    static class WhereParser
     {
         public static TokenListParser<SqlToken, WhereStatement> Where =
             from wheres in Token.EqualTo(SqlToken.Where)
@@ -32,7 +32,7 @@ namespace Super.Test3.Parsers
         static TokenListParser<SqlToken, WhereCondition> ConditionParser =
             from column in SqlTokenizer.Identifier
             from equal in Token.EqualTo(SqlToken.Equal)
-            from value in SqlTokenizer.StringLiteral
+            from value in SqlTokenizer.StringLiteral.Or(SqlTokenizer.NumberLiteral)
             select new WhereCondition(column, value);
     }
 }

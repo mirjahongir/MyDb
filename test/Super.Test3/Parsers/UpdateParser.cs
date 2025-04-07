@@ -5,7 +5,7 @@ using Superpower.Parsers;
 
 namespace Super.Test3.Parsers
 {
-    public class UpdateStatement : ISqlStatement
+    public class UpdateStatement
     {
         public required string Table { get; set; }
         public required SetAssigment[] Assigments { get; set; }
@@ -16,7 +16,7 @@ namespace Super.Test3.Parsers
         public string Column { get; set; }
         public string Value { get; set; }
     }
-    
+
     public static class UpdateParser
     {
         public static TokenListParser<SqlToken, UpdateStatement> Update =
@@ -32,8 +32,20 @@ namespace Super.Test3.Parsers
         static TokenListParser<SqlToken, SetAssigment> AssigmentParser =
             from column in SqlTokenizer.Identifier
             from equal in Token.EqualTo(SqlToken.Equal)
-            from value in SqlTokenizer.StringLiteral
+            from value in SqlTokenizer.StringLiteral.Or(SqlTokenizer.NumberLiteral)
             select new SetAssigment() { Column = column, Value = value };
 
+    }
+
+    public static class UpdateTest
+    {
+        static string UpdateSql = "UPDATE Talabalar SET Ism = 'Ali', TugilganYil = 2000 WHERE Id = 1;";
+        public static UpdateStatement UpdateMethod()
+        {
+            var tokenizer = SqlTokenizer.Instance;
+            var tokens = tokenizer.Tokenize(UpdateSql);
+            var result = UpdateParser.Update.Parse(tokens);
+            return result;
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace Super.Test3
             .Match(Span.EqualToIgnoreCase("table"), SqlToken.Table)
             .Match(Span.EqualToIgnoreCase("database"), SqlToken.Database)
             .Match(Span.EqualToIgnoreCase("delete"), SqlToken.Delete)
+            .Match(Span.EqualToIgnoreCase("schema"), SqlToken.Schema)
             .Match(Span.Regex(@"(varchar|char)\s*\(\s*\d+\s*\)", RegexOptions.IgnoreCase), SqlToken.DataType)
             .Match(Span.Regex(@"int|text|float|date", RegexOptions.IgnoreCase), SqlToken.DataType)
             .Match(Character.EqualTo('*'), SqlToken.Star)
@@ -32,6 +33,7 @@ namespace Super.Test3
             .Match(Character.EqualTo('('), SqlToken.LParen)
             .Match(Character.EqualTo(')'), SqlToken.RParen)
             .Match(Character.EqualTo(';'), SqlToken.Semicolon)
+            .Match(Span.Regex(@"'[^']*'"), SqlToken.String)
             .Match(QuotedString.CStyle, SqlToken.String)
             .Match(Numerics.Integer, SqlToken.Number)
             .Match(Superpower.Parsers.Identifier.CStyle, SqlToken.Identifier)
@@ -41,6 +43,8 @@ namespace Super.Test3
              Token.EqualTo(SqlToken.Identifier).Select(t => t.ToStringValue());
         public static TokenListParser<SqlToken, string> StringLiteral =
              Token.EqualTo(SqlToken.String).Select(t => t.ToStringValue());
+        public static TokenListParser<SqlToken, string> NumberLiteral =
+             Token.EqualTo(SqlToken.Number).Select(t => t.ToStringValue());
         public static TokenListParser<SqlToken, string[]> ColumnList =
              Identifier.AtLeastOnceDelimitedBy(Token.EqualTo(SqlToken.Comma));
 

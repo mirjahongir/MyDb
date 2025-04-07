@@ -16,7 +16,7 @@ namespace Super.Test3.Enums
         [Token(Example = "TABLE")] Table,
         [Token(Example = "DATABASE")] Database,
         [Token(Example = "DELETE")] Delete,
-        [Token(Example = "SCHEMA")] Schema,
+        [Token(Example = "schema")] Schema,
         [Token(Example = "*")] Star,
         [Token(Example = "=")] Equal,
         [Token(Example = ",")] Comma,
