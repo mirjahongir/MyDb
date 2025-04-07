@@ -1,8 +1,8 @@
-﻿using Super.Test3.Enums;
-using Superpower.Parsers;
+﻿using Superpower.Parsers;
 using Superpower;
+using Parser.Enums;
 
-namespace Super.Test3.Parsers
+namespace Parser.Parsers
 {
     public class InsertStatement
     {

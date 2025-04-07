@@ -10,11 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FileManager.Test\FileManager.Test.csproj" />
+    <ProjectReference Include="..\..\libs\FileManager\FileManager.csproj" />
   </ItemGroup>
 
 </Project>
