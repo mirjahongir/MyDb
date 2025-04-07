@@ -12,11 +12,13 @@ namespace Super.Test3
     {
         public static void Main()
         {
-            Insert();
+            // Insert();
             // Update();
             // Select();
+            Delete();
             Console.ReadLine();
         }
+
         public void Create()
         {
             Console.WriteLine(JsonConvert.SerializeObject(CreateTest.CreateSchema()));
@@ -38,6 +40,11 @@ namespace Super.Test3
         {
             var insertModel = InsertTest.InsertMethod();
             Console.WriteLine(JsonConvert.SerializeObject(insertModel));
+        }
+        static void Delete()
+        {
+            var result = DeleteTest.DeleteMethod();
+            Console.WriteLine(JsonConvert.SerializeObject(result));
         }
     }
 
