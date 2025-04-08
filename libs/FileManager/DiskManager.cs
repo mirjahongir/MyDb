@@ -9,7 +9,7 @@ namespace FileManagers
     {
         FileStream _stream;
         FileStreamOptions option;
-        Block _headerBlock;
+
         public DiskManager(string path)
         {
             option = new FileStreamOptions()
@@ -45,10 +45,7 @@ namespace FileManagers
         #region Block
         public void SaveBlock(Block block)
         {
-            var pageId = block.Header.BlockNumber;
-            Span<byte> data = stackalloc byte[FileConfig.BlockSize];
-            Serialize(ref data, ref block);
-            SetByteData(pageId,ref data);
+
         }
         public void SetByteData(UInt32 pageId, ref Span<byte> data)
         {
@@ -60,13 +57,13 @@ namespace FileManagers
 
         public void Serialize(ref Span<byte> data, ref Block block)
         {
-            block.Header.ToSpan(ref data);
-            block.Data.Span.CopyTo(data.Slice(10));
+            //block.Header.ToSpan(ref data);
+            //block.Data.Span.CopyTo(data.Slice(10));
         }
 
         public Block Deserialize(ref byte[] bytes)
         {
-            return null;
+            return new Block();
         }
         public Block ReadBlock(uint blockId)
         {

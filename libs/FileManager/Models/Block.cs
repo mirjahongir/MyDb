@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Buffers.Binary;
+using System;
+using System.Runtime.InteropServices;
 
 using FileManager.Enums;
 
@@ -7,46 +9,35 @@ namespace FileManager.Models
     // 2^13=8192
     public class Block
     {
-        //10 Byte
-        public BlockHeader Header { get; set; }
+        // 4 byte
+        public uint PageId;
+        // 1 byte
+        public BlockType BlockType;
+        // 2 byte
+        public ushort Count;
+        //2 byte
+        public ushort Hash;
+        // not Add Disk
+        public bool CanDelete
+        {
+            get
+            {
+                //BUG:
+                return true;
+            }
+        }
+        // 8192-9=8183
         public Memory<byte> Data { get; set; } // 2^13 - 10 = 8192 - 10 = 8182
     }
-    //10 byte
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct BlockHeader
+
+    //4 byte
+    public struct DataHeader
     {
-        //4 Byte
-        public uint BlockNumber { get; set; }
-        //1 byte
-        public BlockType BlockType { get; set; }
-        // 2 Byte
-        public ushort Count { get; set; }
-        // 1 byte DataSize 2 darajasi
-        public byte DataSize { get; set; }
-        // Span<byte> ga aylantirish
-        public void ToSpan(ref Span<byte> span)
-        {
-            //Span<byte> span = new byte[10]; // 4 + 1 + 2 + 1 = 8 byte
-            BitConverter.TryWriteBytes(span.Slice(0, 4), BlockNumber);  // BlockNumber: 4 byte
-            span[4] = (byte)BlockType;                                  // BlockType: 1 byte
-            BitConverter.TryWriteBytes(span.Slice(5, 2), Count);         // Count: 2 byte
-            span[7] = DataSize;                                          // DataSize: 1 byte
-            //return span.ToArray();
-        }
-
-        // Span<byte> dan BlockHeader-ga aylantirish
-        public static BlockHeader FromSpan(ref Span<byte> span)
-        {
-            var blockHeader = new BlockHeader
-            {
-                BlockNumber = BitConverter.ToUInt32(span.Slice(0, 4)),
-                BlockType = (BlockType)span[4],
-                Count = BitConverter.ToUInt16(span.Slice(5, 2)),
-                DataSize = span[7]
-            };
-            return blockHeader;
-        }
-
+        //oxiridan boshlanadi
+        //Aslida LastPostion disayam buladi
+        public ushort LastPosition { get; set; } // 2 byte
+        //Texni uzunligi
+        public ushort Length { get; set; }
     }
 
 }

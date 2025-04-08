@@ -13,14 +13,14 @@ namespace FileManagers.Test
         public static void CreateBlockTest(ref Memory<byte> data)
         {
 
-            Block block = new Block()
-            {
-                 Header = new BlockHeader() { BlockNumber = 1, BlockType = BlockType.Create, Count = 5, DataSize = 5 },
-                Data = data
-            };
-            Span<byte> span = stackalloc byte[8192];
-            block.Header.ToSpan(ref span);
-            block.Data.Span.CopyTo(span.Slice(10));
+            //Block block = new Block()
+            //{
+            //     Header = new BlockHeader() { BlockNumber = 1, BlockType = BlockType.Create, Count = 5, DataSize = 5 },
+            //    Data = data
+            //};
+            //Span<byte> span = stackalloc byte[8192];
+            //block.Header.ToSpan(ref span);
+            //block.Data.Span.CopyTo(span.Slice(10));
 
         }
         static void Main(string[] args)
