@@ -1,4 +1,4 @@
-﻿namespace FileManager
+﻿namespace FileManager.Configs
 {
     public static class FileConfig
     {

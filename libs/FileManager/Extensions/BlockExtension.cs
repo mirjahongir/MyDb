@@ -1,5 +1,6 @@
 ﻿using Core.Models;
 
+using FileManager.Configs;
 using FileManager.Models;
 
 namespace FileManager.Extensions

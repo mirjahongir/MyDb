@@ -1,9 +1,9 @@
 ﻿using FileManager.Extensions;
 using FileManager.Models;
 
-namespace FileManagers
+namespace FileManager.Managers
 {
-    public sealed class MemoryCache
+    public sealed class MemoryManager
     {
         #region Bu qismini keyinchalik ozgartirish kerak
         /// <summary>
@@ -23,7 +23,7 @@ namespace FileManagers
         //delegate void InsertBlockFinishHandler(Block block);
         //event InsertBlockFinishHandler? Notify;
 
-        public MemoryCache()
+        public MemoryManager()
         {
             counter = 0;
         }

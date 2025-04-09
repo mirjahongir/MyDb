@@ -1,8 +1,4 @@
-﻿using System.Buffers.Binary;
-using System;
-using System.Runtime.InteropServices;
-
-using FileManager.Enums;
+﻿using FileManager.Enums;
 
 namespace FileManager.Models
 {
@@ -28,17 +24,6 @@ namespace FileManager.Models
         }
         // 8192-9=8183
         public Memory<byte> Data { get; set; } // 2^13 - 10 = 8192 - 10 = 8182
-    }
-
-    //4 byte
-    public struct DataHeader
-    {
-        //oxiridan boshlanadi
-        //Aslida LastPostion disayam buladi
-        public ushort LastPosition { get; set; } // 2 byte
-        //Texni uzunligi
-        public ushort Length { get; set; }
-        public Status DataStatus { get; set; }
     }
 
 }
