@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using Core.Models;
 
 using FileManager.Configs;
+using FileManager.Errors;
 using FileManager.Extensions;
 using FileManager.Models;
 
@@ -30,12 +31,12 @@ namespace FileManager.Managers
             CreateOption();
             _stream = new FileStream(_path, option);
         }
-        public static (DiskManager, Error?) Create([Required][NotNull] string path, [Required] Block block, [Required] int fileSize)
+        public static (DiskManager?, Error?) Create([Required][NotNull] string path, [Required] Block block, [Required] int fileSize)
         {
             if (File.Exists(path))
             {
                 //Error qaytish kerak
-                return (null, new Error() { Message = "File already exists" });
+                return (null, Err.FileExist);
             }
             DiskManager result = new(path, block, fileSize);
             return (result, null);

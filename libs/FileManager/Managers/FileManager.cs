@@ -1,4 +1,6 @@
 ﻿using Core.Models;
+
+using FileManager.Errors;
 using FileManager.Models;
 
 namespace FileManager.Managers
@@ -18,7 +20,7 @@ namespace FileManager.Managers
         {
             if (!File.Exists(path))
             {
-                return (null, new Error() { Message = "File not found" });
+                return (null, Err.FileNotFound);
             }
             var diskManager = new DiskManager(path);
             var (block, err) = diskManager.ReadBlock(0);
@@ -33,7 +35,7 @@ namespace FileManager.Managers
         {
             if (File.Exists(path))
             {
-                return (null, new Error() { Message = "File already exists" });
+                return (null, Err.FileExist);
             }
             var result = new FileManager() { HeaderBlock = GernerateHeaderBlock() };
             var (disc, err) = DiskManager.Create(path, result.HeaderBlock, blockCount);
@@ -60,7 +62,7 @@ namespace FileManager.Managers
             GC.SuppressFinalize(this);
         }
         #endregion
-        
+
     }
 
 }

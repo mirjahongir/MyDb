@@ -1,6 +1,7 @@
 ﻿using Core.Models;
 using FileManager.Configs;
 using FileManager.Enums;
+using FileManager.Errors;
 using FileManager.Models;
 
 namespace FileManager.Extensions
@@ -88,7 +89,7 @@ namespace FileManager.Extensions
             {
                 //BUG:
                 //Error qaytish kerak
-                return (false, new Error());
+                return (false, Err.BlockSizeError);
             }
             // 4 byte PageId
             data[0] = (byte)(block.PageId & 0xFF);
