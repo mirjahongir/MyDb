@@ -58,7 +58,7 @@ namespace FileManager.Managers
             return (true, null);
         }
 
-        public (Block, Error) ReadBlock(uint blockId)
+        public (Block?, Error?) ReadBlock(uint blockId)
         {
 
             _stream.Seek(GetPostion(blockId), SeekOrigin.Begin);

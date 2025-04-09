@@ -11,7 +11,7 @@ namespace Parser.Parsers
     public class CreateDatabase : Create
     {
         public override CreateType CreateType { get => CreateType.Database; }
-        public string Database { get; set; }
+        public string? Database { get; set; }
     }
     public class CreateTable : Create
     {

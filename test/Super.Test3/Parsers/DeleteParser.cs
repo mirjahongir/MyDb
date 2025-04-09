@@ -1,9 +1,5 @@
-﻿
-
-using Super.Test3.Enums;
-
+﻿using Super.Test3.Enums;
 using Superpower;
-using Superpower.Model;
 using Superpower.Parsers;
 
 namespace Super.Test3.Parsers
@@ -11,7 +7,7 @@ namespace Super.Test3.Parsers
     public class DeleteStatement
     {
         public required string Table { get; set; }
-        public WhereStatement WhereStatement { get; set; }
+        public WhereStatement? WhereStatement { get; set; }
     }
     static class DeleteParser
     {

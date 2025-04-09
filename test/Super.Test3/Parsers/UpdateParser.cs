@@ -1,5 +1,4 @@
 ﻿using Super.Test3.Enums;
-
 using Superpower;
 using Superpower.Parsers;
 
@@ -13,8 +12,8 @@ namespace Super.Test3.Parsers
     }
     public class SetAssigment
     {
-        public string Column { get; set; }
-        public string Value { get; set; }
+        public string? Column { get; set; }
+        public string? Value { get; set; }
     }
 
     public static class UpdateParser

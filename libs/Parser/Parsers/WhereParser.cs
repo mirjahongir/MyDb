@@ -1,5 +1,4 @@
 ﻿using Parser.Enums;
-
 using Superpower;
 using Superpower.Parsers;
 
@@ -7,14 +6,10 @@ namespace Parser.Parsers
 {
     public class WhereStatement
     {
-        public WhereCondition[] Condition { get; set; }
+        public WhereCondition[]? Condition { get; set; }
     }
     public class WhereCondition
     {
-        public WhereCondition()
-        {
-
-        }
         public WhereCondition(string column, string value)
         {
             Column = column;

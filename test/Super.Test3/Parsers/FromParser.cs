@@ -1,5 +1,4 @@
 ﻿using Super.Test3.Enums;
-
 using Superpower;
 using Superpower.Parsers;
 
@@ -7,7 +6,7 @@ namespace Super.Test3.Parsers
 {
     public class FromStatement
     {
-        public string TableName { get; internal set; }
+        public  string? TableName { get; internal set; }
     }
     static class FromParser
     {

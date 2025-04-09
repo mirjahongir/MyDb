@@ -8,9 +8,9 @@ namespace Super.Test3.Parsers
 {
     public class SelectStatement
     {
-        public string[] Columns { get; set; }
-        public FromStatement FromStatement { get; set; }
-        public WhereStatement WhereStatement { get; set; }
+        public string[]? Columns { get; set; }
+        public FromStatement? FromStatement { get; set; }
+        public WhereStatement? WhereStatement { get; set; }
     }
     public class SelectParser
     {

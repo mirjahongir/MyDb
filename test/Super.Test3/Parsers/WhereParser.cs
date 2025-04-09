@@ -6,11 +6,11 @@ namespace Super.Test3.Parsers
 {
     public class WhereStatement
     {
-        public WhereCondition[] Condition { get; set; }
+        public WhereCondition[]? Condition { get; set; }
     }
     public class WhereCondition
     {
-        public WhereCondition()
+        private WhereCondition()
         {
 
         }
@@ -26,7 +26,7 @@ namespace Super.Test3.Parsers
     {
         public static TokenListParser<SqlToken, WhereStatement> Where =
             from wheres in Token.EqualTo(SqlToken.Where)
-            from condition in ConditionParser.ManyDelimitedBy(Token.EqualTo(SqlToken.Comma))
+            from condition in ConditionParser!.ManyDelimitedBy(Token.EqualTo(SqlToken.Comma)) // Added null-forgiving operator (!)
             select new WhereStatement() { Condition = condition };
 
         static TokenListParser<SqlToken, WhereCondition> ConditionParser =

@@ -13,8 +13,8 @@ namespace Parser.Parsers
     }
     public class SetAssigment
     {
-        public string Column { get; set; }
-        public string Value { get; set; }
+        public required string Column { get; set; }
+        public required string Value { get; set; }
     }
 
     public static class UpdateParser
