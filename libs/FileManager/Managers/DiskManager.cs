@@ -1,4 +1,8 @@
-﻿using Core.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
+using Core.Models;
+
 using FileManager.Configs;
 using FileManager.Extensions;
 using FileManager.Models;
@@ -18,6 +22,7 @@ namespace FileManager.Managers
             CreateOption(FileMode.Create);
             _stream = new FileStream(_path, option);
             _stream.SetLength(fileSize);
+            SaveBlock(block);
         }
         public DiskManager(string path)
         {
@@ -25,14 +30,14 @@ namespace FileManager.Managers
             CreateOption();
             _stream = new FileStream(_path, option);
         }
-        public static (DiskManager, Error?) Create(string path, Block block)
+        public static (DiskManager, Error?) Create([Required][NotNull] string path, [Required] Block block, [Required] int fileSize)
         {
             if (File.Exists(path))
             {
                 //Error qaytish kerak
                 return (null, new Error() { Message = "File already exists" });
             }
-            DiskManager result = new(path, block, 0);
+            DiskManager result = new(path, block, fileSize);
             return (result, null);
         }
         #endregion
@@ -40,7 +45,10 @@ namespace FileManager.Managers
 
         public (bool, Error?) SaveBlock(Block block)
         {
-            return (false, null);
+            Span<byte> bytes = stackalloc byte[FileConfig.BlockSize];
+            block.Serialize(ref bytes);
+            SetByteData(block.PageId, ref bytes);
+            return (true, null);
         }
         public (bool, Error?) SetByteData(uint pageId, ref Span<byte> data)
         {

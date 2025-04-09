@@ -3,7 +3,7 @@ using FileManager.Models;
 
 namespace FileManager.Managers
 {
-    public sealed class MemoryManager
+    public sealed class MemoryManager : IDisposable
     {
         #region Bu qismini keyinchalik ozgartirish kerak
         /// <summary>
@@ -22,12 +22,14 @@ namespace FileManager.Managers
         uint counter;
         //delegate void InsertBlockFinishHandler(Block block);
         //event InsertBlockFinishHandler? Notify;
-
-        public MemoryManager()
+        private MemoryManager()
         {
             counter = 0;
         }
-
+        public static MemoryManager Create()
+        {
+            return new MemoryManager();
+        }
         public void SetBlock(ref Block block)
         {
 
@@ -38,8 +40,12 @@ namespace FileManager.Managers
         }
         public void InserData(byte[] data)
         {
-          var valueLength=  data.Length.Pow();
-            
+            var valueLength = data.Length.Pow();
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 

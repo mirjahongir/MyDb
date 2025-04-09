@@ -22,7 +22,7 @@ namespace FileManager.Models
                 return true;
             }
         }
-        // 8192-9=8183
+        // 8192-10=8182
         public Memory<byte> Data { get; set; } // 2^13 - 10 = 8192 - 10 = 8182
     }
 
