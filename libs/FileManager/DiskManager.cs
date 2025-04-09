@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Core.Models;
 
 using FileManager;
+using FileManager.Extensions;
 using FileManager.Models;
 
 namespace FileManagers
@@ -9,19 +10,24 @@ namespace FileManagers
     {
         FileStream _stream;
         FileStreamOptions option;
+        public static string _path { get; private set; }
+        private DiskManager(string path, Block block, int filePath)
+        {
 
+        }
         public DiskManager(string path)
         {
+            _path = path;
             option = new FileStreamOptions()
             {
                 Access = FileAccess.ReadWrite,
                 BufferSize = FileConfig.BlockSize,
                 Mode = FileMode.OpenOrCreate,
                 Options = FileOptions.RandomAccess,
-                PreallocationSize = 10 * 1024 * 1024,
+                PreallocationSize = 8192 * 1024,
                 Share = FileShare.None,
             };
-            _stream = new FileStream(path, option);
+            _stream = new FileStream(_path, option);
         }
         public void Dispose()
         {
@@ -36,45 +42,36 @@ namespace FileManagers
                 return 0;
             }
         }
-        public static DiskManager Create(string path, Block block)
+        public static (DiskManager, Error?) Create(string path, Block block)
         {
-            //BUG: method not implement
-            throw new NotImplementedException();
+            DiskManager result = new(path, block, 0);
+            return (result, null);
         }
 
         #region Block
-        public void SaveBlock(Block block)
+        public (bool, Error?) SaveBlock(Block block)
         {
-
+            return (false, null);
         }
-        public void SetByteData(UInt32 pageId, ref Span<byte> data)
+        public (bool, Error?) SetByteData(UInt32 pageId, ref Span<byte> data)
         {
             _stream.Seek(GetPostion(pageId), SeekOrigin.Begin);
             _stream.Write(data);
+            return (true, null);
         }
         #endregion
 
+        public (Block, Error) ReadBlock(uint blockId)
+        {
 
-        public void Serialize(ref Span<byte> data, ref Block block)
-        {
-            //block.Header.ToSpan(ref data);
-            //block.Data.Span.CopyTo(data.Slice(10));
-        }
-
-        public Block Deserialize(ref byte[] bytes)
-        {
-            return new Block();
-        }
-        public Block ReadBlock(uint blockId)
-        {
             _stream.Seek(GetPostion(blockId), SeekOrigin.Begin);
-            var buffer = new byte[FileConfig.BlockSize];
-            var readCount = _stream.Read(buffer, 0, FileConfig.BlockSize);
-            return Deserialize(ref buffer);
+            Span<byte> buffer = stackalloc byte[FileConfig.BlockSize];
+            var readCount = _stream.Read(buffer);
+            return BlockExtension.GenerateBlock(ref buffer);
+
         }
 
-
-        public UInt32 GetPostion(uint blockId)
+        UInt32 GetPostion(uint blockId)
         {
             var position = FileConfig.BlockSize * blockId;
             if (FileLength > position + FileConfig.BlockSize)

@@ -11,15 +11,15 @@ namespace Parser.Benchmark
         {
             BenchmarkRunner.Run<HashItem>();
             return;
-            byte[] byteArray1 = new byte[] { 1, 2, 3, 4, 5 };
-            byte[] byteArray2 = new byte[] { 1, 2, 3, 4, 5 };
+            //byte[] byteArray1 = [1, 2, 3, 4, 5];
+            //byte[] byteArray2 = new byte[] { 1, 2, 3, 4, 5 };
 
-            Memory<byte> memory1 = new Memory<byte>(byteArray1);
-            Memory<byte> memory2 = new Memory<byte>(byteArray2);
+            //Memory<byte> memory1 = new Memory<byte>(byteArray1);
+            //Memory<byte> memory2 = new Memory<byte>(byteArray2);
 
-            Console.WriteLine(memory1.GetHashCode()); // Xotira manzili asosida hash kodi
-            Console.WriteLine(memory2.GetHashCode()); // Xotira manzili asosida hash kodi
-            return;
+            //Console.WriteLine(memory1.GetHashCode()); // Xotira manzili asosida hash kodi
+            //Console.WriteLine(memory2.GetHashCode()); // Xotira manzili asosida hash kodi
+            //return;
             //string str = "some text";
             //Stopwatch sw = Stopwatch.StartNew();
             //for (int i = 0; i < 1_000_000; i++)

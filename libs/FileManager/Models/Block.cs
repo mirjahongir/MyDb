@@ -38,6 +38,7 @@ namespace FileManager.Models
         public ushort LastPosition { get; set; } // 2 byte
         //Texni uzunligi
         public ushort Length { get; set; }
+        public Status DataStatus { get; set; }
     }
 
 }
