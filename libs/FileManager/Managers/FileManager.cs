@@ -1,43 +1,47 @@
 ﻿using Core.Models;
 
+using FileManager.Configs;
 using FileManager.Errors;
 using FileManager.Models;
 
 namespace FileManager.Managers
 {
 
-    public class FileManager : IDisposable
+    public class BlockFileManager : IDisposable
     {
         #region Constructor
         DiskManager _disk;
         MemoryManager _memory;
-        Block HeaderBlock;
-        private FileManager()
+        HeaderBlock HeaderBlock;
+        private BlockFileManager()
         {
 
         }
-        public static (FileManager?, Error?) Open(string path)
+        public static (BlockFileManager?, Error?) Open(string path)
         {
             if (!File.Exists(path))
             {
                 return (null, Err.FileNotFound);
             }
             var diskManager = new DiskManager(path);
-            var (block, err) = diskManager.ReadBlock(0);
+            var (block, err) = diskManager.ReadHeadBlock(0);
             if (err != null)
             {
             }
             MemoryManager memoryManager = MemoryManager.Create();
-            var result = new FileManager() { HeaderBlock = block, _disk = diskManager, _memory = memoryManager };
+            var result = new BlockFileManager() { HeaderBlock = block, _disk = diskManager, _memory = memoryManager };
             return (result, null);
         }
-        public static (FileManager?, Error?) Create(string path, int blockCount = 800)
+        public static (BlockFileManager?, Error?) Create(string path, int blockCount = 800)
         {
             if (File.Exists(path))
             {
                 return (null, Err.FileExist);
             }
-            var result = new FileManager() { HeaderBlock = GernerateHeaderBlock() };
+            var result = new BlockFileManager() {
+                HeaderBlock = HeaderBlock.CreateDefaultHeader()
+            };
+            blockCount= FileConfig.BlockSize * blockCount;
             var (disc, err) = DiskManager.Create(path, result.HeaderBlock, blockCount);
             if (err != null)
             {
@@ -48,12 +52,6 @@ namespace FileManager.Managers
             result._memory = MemoryManager.Create();
             return (result, null);
 
-        }
-        private static Block GernerateHeaderBlock()
-        {
-            //BUG: Default Blokni yaratish kerak
-            Block block = new Block() { };
-            return block;
         }
         public void Dispose()
         {

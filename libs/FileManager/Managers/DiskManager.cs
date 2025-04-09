@@ -31,7 +31,10 @@ namespace FileManager.Managers
             CreateOption();
             _stream = new FileStream(_path, option);
         }
-        public static (DiskManager?, Error?) Create([Required][NotNull] string path, [Required] Block block, [Required] int fileSize)
+        public static (DiskManager?, Error?) Create(
+            [Required][NotNull] string path,
+            [Required] Block block,
+            [Required] int fileSize)
         {
             if (File.Exists(path))
             {
@@ -66,6 +69,10 @@ namespace FileManager.Managers
             var readCount = _stream.Read(buffer);
             return BlockExtension.GenerateBlock(ref buffer);
 
+        }
+        public (HeaderBlock?, Error?) ReadHeadBlock(uint blockId)
+        {
+            return (null, null);
         }
 
         #region PriveteMethods

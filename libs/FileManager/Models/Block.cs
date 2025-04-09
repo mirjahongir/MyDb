@@ -23,7 +23,14 @@ namespace FileManager.Models
             }
         }
         // 8192-10=8182
-        public Memory<byte> Data { get; set; } // 2^13 - 10 = 8192 - 10 = 8182
+        public virtual Memory<byte> Data { get; set; } // 2^13 - 10 = 8192 - 10 = 8182
+       
+            
+        public static Block CreateDataBlock(Block header)
+        {
+            return null;
+        }
+
     }
 
 }
