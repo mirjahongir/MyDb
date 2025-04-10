@@ -1,8 +1,8 @@
 ﻿using Core.Models;
 
+using FileManager.Blocks;
 using FileManager.Configs;
 using FileManager.Errors;
-using FileManager.Models;
 
 namespace FileManager.Managers
 {
@@ -12,7 +12,7 @@ namespace FileManager.Managers
         #region Constructor
         DiskManager _disk;
         MemoryManager _memory;
-        HeaderBlock HeaderBlock;
+        SectorBlock HeaderBlock;
         private BlockFileManager()
         {
 
@@ -38,10 +38,11 @@ namespace FileManager.Managers
             {
                 return (null, Err.FileExist);
             }
-            var result = new BlockFileManager() {
-                HeaderBlock = HeaderBlock.CreateDefaultHeader()
+            var result = new BlockFileManager()
+            {
+                //HeaderBlock = SectorBlock.CreateDefaultHeader()
             };
-            blockCount= FileConfig.BlockSize * blockCount;
+            blockCount = FileConfig.BlockSize * blockCount;
             var (disc, err) = DiskManager.Create(path, result.HeaderBlock, blockCount);
             if (err != null)
             {

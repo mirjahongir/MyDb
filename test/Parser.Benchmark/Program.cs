@@ -9,6 +9,8 @@ namespace Parser.Benchmark
     {
         static void Main(string[] args)
         {
+           
+
             BenchmarkRunner.Run<HashItem>();
             return;
             //byte[] byteArray1 = [1, 2, 3, 4, 5];

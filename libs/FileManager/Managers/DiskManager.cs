@@ -3,10 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 
 using Core.Models;
 
+using FileManager.Blocks;
 using FileManager.Configs;
 using FileManager.Errors;
 using FileManager.Extensions;
-using FileManager.Models;
 
 namespace FileManager.Managers
 {
@@ -16,7 +16,7 @@ namespace FileManager.Managers
         FileStream _stream;
         FileStreamOptions option;
         public static string _path { get; private set; }
-        private DiskManager(string path, Block block, int fileSize)
+        private DiskManager(string path, BaseBlock block, int fileSize)
         {
             _path = path;
             //Bu yerda File path buicha tekshirish kerak
@@ -33,7 +33,7 @@ namespace FileManager.Managers
         }
         public static (DiskManager?, Error?) Create(
             [Required][NotNull] string path,
-            [Required] Block block,
+            [Required] BaseBlock block,
             [Required] int fileSize)
         {
             if (File.Exists(path))
@@ -47,43 +47,37 @@ namespace FileManager.Managers
         #endregion
 
 
-        public (bool, Error?) SaveBlock(Block block)
+        public (bool, Error?) SaveBlock(BaseBlock block)
         {
             Span<byte> bytes = stackalloc byte[FileConfig.BlockSize];
             block.Serialize(ref bytes);
             SetByteData(block.PageId, ref bytes);
             return (true, null);
         }
-        public (bool, Error?) SetByteData(uint pageId, ref Span<byte> data)
+        public (bool, Error?) SetByteData(ulong pageId, ref Span<byte> data)
         {
             _stream.Seek(GetPostion(pageId), SeekOrigin.Begin);
             _stream.Write(data);
             return (true, null);
         }
 
-        public (Block?, Error?) ReadBlock(uint blockId)
+        public (BaseBlock?, Error?) ReadBlock(uint blockId)
         {
 
             _stream.Seek(GetPostion(blockId), SeekOrigin.Begin);
             Span<byte> buffer = stackalloc byte[FileConfig.BlockSize];
             var readCount = _stream.Read(buffer);
             return BlockExtension.GenerateBlock(ref buffer);
-
         }
-        public (HeaderBlock?, Error?) ReadHeadBlock(uint blockId)
+        public (SectorBlock?, Error?) ReadHeadBlock(uint blockId)
         {
             return (null, null);
         }
 
         #region PriveteMethods
-        uint GetPostion(uint blockId)
+        uint GetPostion(ulong blockId)
         {
-            var position = FileConfig.BlockSize * blockId;
-            if (FileLength > position + FileConfig.BlockSize)
-            {
-                //Bug: Error Qaytarish kerak
-            }
-            return position;
+            return 0;
         }
         void CreateOption(FileMode mode = FileMode.Open)
         {

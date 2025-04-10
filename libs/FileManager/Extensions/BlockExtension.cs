@@ -1,4 +1,6 @@
 ﻿using Core.Models;
+
+using FileManager.Blocks;
 using FileManager.Configs;
 using FileManager.Enums;
 using FileManager.Errors;
@@ -73,9 +75,9 @@ namespace FileManager.Extensions
             return (header, null);
         }
         
-        public static (Block, Error?) GenerateBlock(ref Span<byte> data)
+        public static (BaseBlock, Error?) GenerateBlock(ref Span<byte> data)
         {
-            var block = new Block
+            var block = new BaseBlock
             {
 
             };
@@ -83,7 +85,7 @@ namespace FileManager.Extensions
         }
 
         #region Serialize and Deserialize
-        public static (bool, Error?) Serialize(this Block block, ref Span<byte> data)
+        public static (bool, Error?) Serialize(this BaseBlock block, ref Span<byte> data)
         {
             if (data.Length != FileConfig.BlockSize)
             {
@@ -99,19 +101,19 @@ namespace FileManager.Extensions
             // 1 byte BlockType
             data[4] = (byte)block.BlockType;
             // 2 byte Count
-            data[5] = (byte)(block.Count & 0xFF);
-            data[6] = (byte)((block.Count >> 8) & 0xFF);
+            //data[5] = (byte)(block.Count & 0xFF);
+            //data[6] = (byte)((block.Count >> 8) & 0xFF);
             // 2 byte Hash
             data[7] = (byte)(block.Hash & 0xFF);
             data[8] = (byte)((block.Hash >> 8) & 0xFF); //Umumiy 9 bayt
 
             var slice = data.Slice(9, 8182);
-
-            block.Data.Span.CopyTo(slice);
+            //BUG: hell
+           // block.Data.Span.CopyTo(slice);
 
             return (true, null);
         }
-        public static (bool, Error?) Serialize(this Memory<Block> blocks, ref Span<byte> data)
+        public static (bool, Error?) Serialize(this Memory<BaseBlock> blocks, ref Span<byte> data)
         {
             int a = 0;
             foreach (var i in blocks.Span)
@@ -121,21 +123,22 @@ namespace FileManager.Extensions
             }
             return (true, null);
         }
-        public static (Block, Error) Deserialize(ref Span<byte> data)
+        public static (BaseBlock, Error) Deserialize(ref Span<byte> data)
         {
-            Block block = new()
+            BaseBlock block = new()
             {
                 PageId = (uint)(data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24)),
                 BlockType = (BlockType)data[4],
-                Count = (ushort)(data[5] | (data[6] << 8)),
+               // Count = (ushort)(data[5] | (data[6] << 8)),
                 Hash = (ushort)(data[7] | (data[8] << 8)),
-                Data = new Memory<byte>(data.Slice(9, 8182).ToArray()) // Fix: Convert Span<byte> to Memory<byte> using ToArray()
+                //BUG: data ni tug`irlash kerak
+             //   Data = new Memory<byte>(data.Slice(9, 8182).ToArray()) // Fix: Convert Span<byte> to Memory<byte> using ToArray()
             };
             return (block, null);
         }
-        public static (Block[], Error?) DeserializeBlocks(ref Span<byte> data)
+        public static (BaseBlock[], Error?) DeserializeBlocks(ref Span<byte> data)
         {
-            List<Block> blocks = [];
+            List<BaseBlock> blocks = [];
             int a = 0;
             while (a * FileConfig.BlockSize < data.Length)
             {

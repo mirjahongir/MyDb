@@ -2,7 +2,8 @@
 
 namespace FileManager.Models
 {
-    //4 byte
+    // Har bir ma`lumotning boshida header buladi
+    //5 byte
     public struct DataHeader
     {
         //oxiridan boshlanadi

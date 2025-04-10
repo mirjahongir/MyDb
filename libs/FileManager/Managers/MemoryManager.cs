@@ -1,4 +1,5 @@
-﻿using FileManager.Extensions;
+﻿using FileManager.Blocks;
+using FileManager.Extensions;
 using FileManager.Models;
 
 namespace FileManager.Managers
@@ -18,7 +19,7 @@ namespace FileManager.Managers
         /// </summary>
         //  Memory<Block> _cache2;
         #endregion
-        Block InserBlock;
+        BaseBlock InserBlock;
         uint counter;
         //delegate void InsertBlockFinishHandler(Block block);
         //event InsertBlockFinishHandler? Notify;
@@ -30,7 +31,7 @@ namespace FileManager.Managers
         {
             return new MemoryManager();
         }
-        public void SetBlock(ref Block block)
+        public void SetBlock(ref BaseBlock block)
         {
 
         }
