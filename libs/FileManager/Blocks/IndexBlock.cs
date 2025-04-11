@@ -1,8 +1,10 @@
-﻿namespace FileManager.Blocks
+﻿using System.Buffers;
+
+namespace FileManager.Blocks
 {
     public sealed class IndexBlock : BaseBlock
     {
-        public Memory<byte> Data { get; set; }
+        public IMemoryOwner<byte> Data { get; set; }
     }
 
 }
