@@ -20,6 +20,7 @@ namespace FileManager.Blocks
         public ushort Hash;
         //2 byte
         public ushort UsedBytes;
+
         //nasledovat qilingan klasslar hajmini belgilaydi
         public required IMemoryOwner<byte> Data;
         // 3 byte 
@@ -50,9 +51,10 @@ namespace FileManager.Blocks
         public static (bool, Error) SerializeBasePage<T>(this T model, ref Span<byte> span)
             where T : BasePage
         {
-            model.PageId.WriteBytes(ref span);
+            model.PageId.ToBytes(ref span);
             span[4] = (byte)model.PageType;
-            model.UsedBytes.WriteBytes(span.Slice(7, 2));
+            var slice = span.Slice(7, 2);
+            model.UsedBytes.ToBytes(ref slice);
             //TODO:
             //BUG:
             //Hasni hisoblashni qilish kerak

@@ -77,7 +77,7 @@ namespace FileManagers.Test
 
             return;
             Console.WriteLine("Hello, World!");
-            var (block, err) = BlockFileManager.Create("test.db", 10);
+            //var (block, err) = BlockFileManager.Create("test.db", 10);
 
 
         }
