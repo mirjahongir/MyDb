@@ -1,6 +1,5 @@
 ﻿using System.Buffers;
 
-using FileManager.Managers;
 
 namespace FileManagers.Test
 {
