@@ -4,14 +4,10 @@ namespace FileManager.Managers.Memories
 {
     internal class SectorMemoryManager
     {
-        private SectorMemoryManager() { }
-        public static SectorMemoryManager Create()
-        {
-            SectorMemoryManager instance = new();
-            return instance;
-        }
+        public SectorMemoryManager() { }
+       
         // Asinxron delegate: engil va tez
-        public event Func<SectorPage,Task> SaveSector;
+        public event Func<SectorPage,ValueTask> SaveSector;
         public async ValueTask sdcsd()
         {
             var handlers = SaveSector?.GetInvocationList();

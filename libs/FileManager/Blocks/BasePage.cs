@@ -22,7 +22,7 @@ namespace FileManager.Blocks
         public ushort UsedBytes;
 
         //nasledovat qilingan klasslar hajmini belgilaydi
-        public required IMemoryOwner<byte> Data;
+        // public required IMemoryOwner<byte> Data;
         // 3 byte 
     }
     public static class BasePageExtension

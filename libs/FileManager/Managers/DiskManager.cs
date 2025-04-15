@@ -6,20 +6,24 @@ namespace FileManager.Managers
     {
         #region Disk Manager
         FileStream _stream;
+        public string Path { get; private set; }
         DiskManager(string path, FileMode mode = FileMode.Open)
         {
+            Path = path;
             var option = CreateOption(mode);
             _stream = new FileStream(path, option);
         }
-        public DiskManager Create(string path)
+        public static DiskManager Create(string path)
         {
             var result = new DiskManager(path, FileMode.Create);
 
             return result;
         }
-        public DiskManager Open(string path)
+
+        public static DiskManager Open(string path)
         {
             var result = new DiskManager(path, FileMode.Open);
+
             return result;
         }
         #endregion
@@ -27,6 +31,11 @@ namespace FileManager.Managers
         {
             _stream.Seek(pageId * FileConfig.PageSize, SeekOrigin.Begin);
             _stream.Write(data.Span);
+        }
+        public ValueTask SaveBlockAsync(uint pageId, Memory<byte> data)
+        {
+            _stream.Seek(pageId * FileConfig.PageSize, SeekOrigin.Begin);
+            return _stream.WriteAsync(data);
         }
         /// <summary>
         /// 

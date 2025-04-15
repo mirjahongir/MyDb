@@ -8,7 +8,7 @@ namespace FileManager.Managers.Memories
         {
 
         }
-        public event Func<IndexPage, Task> SaveIndex;
+        public event Func<IndexPage, ValueTask> SaveIndex;
         public static IndexMemoryManager Create()
         {
             var result = new IndexMemoryManager();

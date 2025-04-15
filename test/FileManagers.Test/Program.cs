@@ -33,8 +33,19 @@ namespace FileManagers.Test
             random.NextBytes(memory.Span);
             return owner;
         }
+        public static void ReadFilename()
+        {
+            string filePath = @"C:\Users\Ali\Documents\report.pdf";
+
+            string fileName = Path.GetFileName(filePath); // faqat fayl nomi (report.pdf)
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath); // report
+
+            Console.WriteLine("Fayl nomi: " + fileName);
+            Console.WriteLine("Fayl nomi (uzaytmasiz): " + fileNameWithoutExtension);
+        }
         static void Main(string[] args)
         {
+            ReadFilename();
             Console.WriteLine(GC.GetTotalMemory(false));
             var memory = GenerateMemory();
             var span = memory.Memory.Span;

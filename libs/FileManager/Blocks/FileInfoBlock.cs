@@ -1,11 +1,10 @@
 ﻿using System.Buffers;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 
 using Core.Extensions;
 using Core.Models;
 
 using FileManager.Config;
+using FileManager.Extensions;
 
 namespace FileManager.Blocks
 {
@@ -15,7 +14,6 @@ namespace FileManager.Blocks
     {
         public static ushort FileInfoFullPropertySize = 30;// ulardan 12 byte BasePage ga tegishli
         public static ushort FileInfoPropertySize = 18; // 4+4+8+2=
-
         // File Name
         //4 byte
         public uint FileName { get; set; }
@@ -32,6 +30,26 @@ namespace FileManager.Blocks
         //8162=583*14
         //8176=511*16==(8*2)
         public List<FileInfoItem>? Sections { get; set; }
+        //public static uint GetFileName(string path)
+        //{
+        //    return 0;
+        //}
+        public static FileInfoPage Create(string path)
+        {
+            FileInfoPage result = new()
+            {
+                PageId = 0,
+                FileName = path.GetFileName(),// GetFileName(path),
+                SectionCount = 0,
+                Sections = [],
+                FileSize = 0,
+                FullDataCount = 0,
+                Hash = 0,
+                PageType = Enums.PageType.FileInfo,
+                UsedBytes = 0,
+            };
+            return result;
+        }
     }
     // 7 byte
     public struct FileInfoItem
@@ -147,6 +165,7 @@ namespace FileManager.Blocks
             return item;
         }
         #endregion
+
 
     }
 }
