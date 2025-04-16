@@ -1,4 +1,6 @@
-﻿using FileManager.Config;
+﻿using System.Buffers;
+
+using FileManager.Config;
 
 namespace FileManager.Managers
 {
@@ -16,7 +18,6 @@ namespace FileManager.Managers
         public static DiskManager Create(string path)
         {
             var result = new DiskManager(path, FileMode.Create);
-
             return result;
         }
 
@@ -26,7 +27,20 @@ namespace FileManager.Managers
 
             return result;
         }
+        public IMemoryOwner<byte> ReadBlockById(uint blockId)
+        {
+            var owner = MemoryPool<byte>.Shared.Rent(FileConfig.PageSize);
+            var memory = owner.Memory;
+            var span = memory.Span;
+            var position = FileConfig.PageSize * blockId;
+            _stream.Position = position;
+            var bytesRead = _stream.Read(span);
+            return owner;
+        }
+        
         #endregion
+
+        #region Write
         public void SaveBlock(uint pageId, Memory<byte> data)
         {
             _stream.Seek(pageId * FileConfig.PageSize, SeekOrigin.Begin);
@@ -37,6 +51,7 @@ namespace FileManager.Managers
             _stream.Seek(pageId * FileConfig.PageSize, SeekOrigin.Begin);
             return _stream.WriteAsync(data);
         }
+        #endregion
         /// <summary>
         /// 
         /// </summary>

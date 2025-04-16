@@ -5,9 +5,11 @@ namespace FileManager.Enums
     {
         None = 0,
         FileInfo = 1,
+        SectorPage=2
     }
-    internal enum OpenStatus
+    public enum DataStatus:byte
     {
-
+        NONE=0,
+        Active
     }
 }

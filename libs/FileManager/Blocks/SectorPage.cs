@@ -24,6 +24,11 @@ namespace FileManager.Blocks
         //14 bytdan 584 ta Page tug`risida ma`lumot yig`adi
         //4 784 128 byte == 4,5625MB  ma`lumotni bita section oladi 
         public required List<SectionItem> Sections { get; set; }
+        public static (SectorPage?, Error?) Deserialize(Memory<byte> memory)
+        {
+            var span= memory.Span;
+           return SectorPageExtension.Deserialize(ref span);
+        }
     }
     //14 byte
     public struct SectionItem
@@ -51,7 +56,7 @@ namespace FileManager.Blocks
             SerializeSectorData(page, ref sectionSlice);
             return (owner, null);
         }
-       
+
         public static (bool, Error?) SerializeProperty(SectorPage page, ref Span<byte> data)
         {
             page.SectionCount.ToBytes(ref data);
@@ -84,7 +89,7 @@ namespace FileManager.Blocks
             DeserializeSectorItem(page, ref dataSlice);
             return (page, null);
         }
-        
+
         public static (bool, Error?) DeserializeProperty(this SectorPage page, Span<byte> data)
         {
             page.SectionCount = data.ToUint16();

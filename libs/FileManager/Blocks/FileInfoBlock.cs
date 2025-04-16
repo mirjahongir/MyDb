@@ -46,9 +46,14 @@ namespace FileManager.Blocks
                 FullDataCount = 0,
                 Hash = 0,
                 PageType = Enums.PageType.FileInfo,
-                UsedBytes = 0,
+                UsedCount = 0,
             };
             return result;
+        }
+        public static FileInfoPage Deserialize(Memory<byte> memory)
+        {
+            var span = memory.Span;
+            return FileInfoPageExtension.Deserialize(ref span);
         }
     }
     // 7 byte

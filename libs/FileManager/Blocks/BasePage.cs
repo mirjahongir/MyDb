@@ -1,9 +1,5 @@
-﻿using System.Buffers;
-using System.Buffers.Binary;
-
-using Core.Extensions;
+﻿using Core.Extensions;
 using Core.Models;
-
 using FileManager.Enums;
 
 namespace FileManager.Blocks
@@ -12,18 +8,23 @@ namespace FileManager.Blocks
     public class BasePage
     {
         public static byte BasePageSize = 12;
+        //0,1,2,3
         //4 byte
         public uint PageId;
+        //4
         //1 byte
         public PageType PageType;
+        //5,6
         // 2 byte
         public ushort Hash;
+        //7,8
         //2 byte
-        public ushort UsedBytes;
+        public ushort UsedCount;
 
         //nasledovat qilingan klasslar hajmini belgilaydi
         // public required IMemoryOwner<byte> Data;
         // 3 byte 
+        //9,10,11
     }
     public static class BasePageExtension
     {
@@ -39,7 +40,7 @@ namespace FileManager.Blocks
             // 5,6
             result.Hash = span.Slice(5, 2).ToUint16();
             //7,8
-            result.UsedBytes = span.Slice(7, 2).ToUint16();
+            result.UsedCount = span.Slice(7, 2).ToUint16();
             return (result, null);
         }
         public static void SetHash<T>(this T page, ref Span<byte> span)
@@ -54,7 +55,7 @@ namespace FileManager.Blocks
             model.PageId.ToBytes(ref span);
             span[4] = (byte)model.PageType;
             var slice = span.Slice(7, 2);
-            model.UsedBytes.ToBytes(ref slice);
+            model.UsedCount.ToBytes(ref slice);
             //TODO:
             //BUG:
             //Hasni hisoblashni qilish kerak

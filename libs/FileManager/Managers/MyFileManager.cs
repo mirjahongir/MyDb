@@ -89,8 +89,8 @@ namespace FileManager.Managers
             var diskManager = DiskManager.Create(path);
             var fileManager = CreateFileInfo(diskManager);
             var sectorManager = CreateSectorManager(diskManager, fileManager);
-            var indexMemoryManager = CreateIndexMemoryManager(fileManager);
-            var dataManager = CreateDataManager();
+            var indexMemoryManager = CreateIndexMemoryManager(sectorManager);
+            var dataManager = CreateDataManager(sectorManager);
             return new MyFileManager(
                 diskManager,
                 sectorManager,
@@ -104,27 +104,28 @@ namespace FileManager.Managers
         {
             var fileInfo = FileInfoPage.Create(disk.Path);
             disk.SetFileSize(583 + 2);
-            FileInfoManager manager = new(fileInfo);
-
+            FileInfoManager manager = FileInfoManager.Create(fileInfo);
             var memory = fileInfo.Serialize();
             disk.SaveBlock(0, memory.Memory);
             memory.Dispose();
-
             return manager;
         }
         static SectorMemoryManager CreateSectorManager(
            DiskManager diskManager,
            FileInfoManager fileInfo)
         {
-
+            SectorMemoryManager sector = new(fileInfo, diskManager);
+            return sector;
         }
-        static IndexMemoryManager CreateIndexMemoryManager(FileInfoManager fileInfo)
+        static IndexMemoryManager CreateIndexMemoryManager(SectorMemoryManager sector)
         {
-
+            IndexMemoryManager result = IndexMemoryManager.Create(sector);
+            return result;
         }
-        static DataMemoryManager CreateDataManager()
+        static DataMemoryManager CreateDataManager(SectorMemoryManager sector)
         {
-
+            var result = DataMemoryManager.Create(sector);
+            return result;
         }
         #endregion
     }
@@ -133,32 +134,17 @@ namespace FileManager.Managers
         public static MyFileManager Open(string path)
         {
             var diskManager = DiskManager.Open(path);
-            var fileManager = OpenFileManager(diskManager);
-            var sectorManager = OpenSectorManager();
-            var indexManager = IndexManager();
-            var dataManager = DataManager();
+            var fileManager = FileInfoManager.Open(diskManager);// OpenFileManager(diskManager);
+            var sectorManager = SectorMemoryManager.Open(fileManager, diskManager);
+            var indexManager = IndexMemoryManager.Open(diskManager, sectorManager);
+            var dataManger = DataMemoryManager.Open( sectorManager);
             return new MyFileManager(diskManager,
                 sectorManager,
                 indexManager,
                 fileManager,
-                dataManager);
+                dataManger);
         }
-        static FileInfoManager OpenFileManager(DiskManager diskManager)
-        {
-
-        }
-        static SectorMemoryManager OpenSectorManager()
-        {
-
-        }
-        static IndexMemoryManager IndexManager()
-        {
-
-        }
-        static DataMemoryManager DataManager()
-        {
-
-        }
+        
     }
 
 }
