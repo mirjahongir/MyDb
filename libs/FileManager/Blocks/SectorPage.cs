@@ -17,6 +17,7 @@ namespace FileManager.Blocks
     {
         public static ushort FullPropertySize => 16;
         public static ushort ProperySize => 4;
+        public static ushort SectorItemCount = 584;
         //2 Byte
         public ushort SectionCount { get; set; }
         //2 byte qoldi
@@ -26,8 +27,8 @@ namespace FileManager.Blocks
         public required List<SectionItem> Sections { get; set; }
         public static (SectorPage?, Error?) Deserialize(Memory<byte> memory)
         {
-            var span= memory.Span;
-           return SectorPageExtension.Deserialize(ref span);
+            var span = memory.Span;
+            return SectorPageExtension.Deserialize(ref span);
         }
     }
     //14 byte

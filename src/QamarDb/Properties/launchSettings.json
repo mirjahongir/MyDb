@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "QamarDb": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

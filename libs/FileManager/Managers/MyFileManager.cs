@@ -41,10 +41,9 @@ namespace FileManager.Managers
         {
             return OpenFileInfoManagerExtension.Open(path);
         }
-
         #endregion
 
-        #region Event
+        #region Events
         private async ValueTask SaveFileInfo(FileInfoPage page)
         {
             var memory = page.Serialize();
@@ -81,6 +80,14 @@ namespace FileManager.Managers
             throw new NotImplementedException();
         }
         #endregion
+
+        #region Methods
+        public void AddData(byte[][] index, byte[][] data)
+        {
+
+        }
+
+        #endregion
     }
     internal static class CreateFileInfoManagerExtension
     {
@@ -88,9 +95,9 @@ namespace FileManager.Managers
         {
             var diskManager = DiskManager.Create(path);
             var fileManager = CreateFileInfo(diskManager);
-            var sectorManager = CreateSectorManager(diskManager, fileManager);
-            var indexMemoryManager = CreateIndexMemoryManager(sectorManager);
-            var dataManager = CreateDataManager(sectorManager);
+            var sectorManager = SectorMemoryManager.Create(fileManager, diskManager);//  CreateSectorManager(diskManager, fileManager);
+            var indexMemoryManager = IndexMemoryManager.Create(sectorManager);//  CreateIndexMemoryManager(sectorManager);
+            var dataManager = DataMemoryManager.Create(sectorManager);// CreateDataManager(sectorManager);
             return new MyFileManager(
                 diskManager,
                 sectorManager,
@@ -103,30 +110,32 @@ namespace FileManager.Managers
         static FileInfoManager CreateFileInfo(DiskManager disk)
         {
             var fileInfo = FileInfoPage.Create(disk.Path);
-            disk.SetFileSize(583 + 2);
+            //1 ta Sector da ketadigan Blocklar va 2 FileInfoBlock va SectorBlock
+            disk.SetFileSize((uint)SectorPage.SectorItemCount + 2);
+            //
             FileInfoManager manager = FileInfoManager.Create(fileInfo);
-            var memory = fileInfo.Serialize();
-            disk.SaveBlock(0, memory.Memory);
-            memory.Dispose();
+            var owner = fileInfo.Serialize();
+            disk.SaveBlock(0, owner.Memory);
+            owner.Dispose();
             return manager;
         }
-        static SectorMemoryManager CreateSectorManager(
-           DiskManager diskManager,
-           FileInfoManager fileInfo)
-        {
-            SectorMemoryManager sector = new(fileInfo, diskManager);
-            return sector;
-        }
-        static IndexMemoryManager CreateIndexMemoryManager(SectorMemoryManager sector)
-        {
-            IndexMemoryManager result = IndexMemoryManager.Create(sector);
-            return result;
-        }
-        static DataMemoryManager CreateDataManager(SectorMemoryManager sector)
-        {
-            var result = DataMemoryManager.Create(sector);
-            return result;
-        }
+        //static SectorMemoryManager CreateSectorManager(
+        //   DiskManager diskManager,
+        //   FileInfoManager fileInfo)
+        //{
+        //    SectorMemoryManager sector = new(fileInfo, diskManager);
+        //    return sector;
+        //}
+        //static IndexMemoryManager CreateIndexMemoryManager(SectorMemoryManager sector)
+        //{
+        //    IndexMemoryManager result = IndexMemoryManager.Create(sector);
+        //    return result;
+        //}
+        //static DataMemoryManager CreateDataManager(SectorMemoryManager sector)
+        //{
+        //    var result = DataMemoryManager.Create(sector);
+        //    return result;
+        //}
         #endregion
     }
     internal static class OpenFileInfoManagerExtension
@@ -137,14 +146,14 @@ namespace FileManager.Managers
             var fileManager = FileInfoManager.Open(diskManager);// OpenFileManager(diskManager);
             var sectorManager = SectorMemoryManager.Open(fileManager, diskManager);
             var indexManager = IndexMemoryManager.Open(diskManager, sectorManager);
-            var dataManger = DataMemoryManager.Open( sectorManager);
+            var dataManger = DataMemoryManager.Open(sectorManager);
             return new MyFileManager(diskManager,
                 sectorManager,
                 indexManager,
                 fileManager,
                 dataManger);
         }
-        
+
     }
 
 }

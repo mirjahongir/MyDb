@@ -23,6 +23,10 @@ namespace Parser.Benchmark
 
             BenchmarkRunner.Run<HashItemBenchmark>();
         }
+        static void SerializrBenchmarks()
+        {
+            BenchmarkRunner.Run<SerializeBenchmark>();
+        }
         static void BinaryPrimitivesTestMigration()
         {
             Span<byte> span = stackalloc byte[] { 0x40, 0xE2, 0x01, 0x00 };
@@ -33,7 +37,18 @@ namespace Parser.Benchmark
         }
         static void Main(string[] args)
         {
-            BinaryPrimitivesTestMigration();
+            try
+            {
+                var user = User.CreateUser();
+                var memory = ZeroFormatter.ZeroFormatterSerializer.Serialize(user);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            //   SerializrBenchmarks();
+            // BinaryPrimitivesTestMigration();
             // BitConvertBenchmarks();
             // FileManagerBenchmarks();
             //HashItemBenchmarkMethod();
