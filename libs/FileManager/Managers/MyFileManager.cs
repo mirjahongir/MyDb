@@ -1,4 +1,8 @@
-﻿using FileManager.Blocks;
+﻿using System.Buffers;
+
+using Core.Models;
+
+using FileManager.Blocks;
 using FileManager.Managers.Memories;
 
 namespace FileManager.Managers
@@ -82,10 +86,15 @@ namespace FileManager.Managers
         #endregion
 
         #region Methods
-        public void AddData(byte[][] index, byte[][] data)
+        public void AddData(BsonValue value)
         {
 
         }
+        public IMemoryOwner<byte> ReadAllData()
+        {
+
+        }
+
 
         #endregion
     }

@@ -2,6 +2,10 @@
 
 namespace Core.Models
 {
+    public class BsonObject
+    {
+
+    }
     public class BsonValue : IComparable<BsonValue>, IEquatable<BsonValue>, IFormattable//, IConvertible
     {
         #region Default Constructor
